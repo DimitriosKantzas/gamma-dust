@@ -132,9 +132,6 @@ plt.close()
 #     plt.close()
 
 
-exit()
-
-## TODO ask Minh for the missing files
 # Load diffuse gamma-ray map from Platz et al. 2023
 with h5py.File('JCR/energy_bins.hdf5', 'r') as file:
     print("Keys: %s" % file.keys())
@@ -214,31 +211,31 @@ plt.savefig('fg_gas_gamma.png', dpi=150)
 plt.close()
 
 
-import healpy as hp
-import numpy as np
-import matplotlib.pyplot as plt
-import scipy as sp
+# import healpy as hp
+# import numpy as np
+# import matplotlib.pyplot as plt
+# import scipy as sp
 
-# Load or create a HEALPix map (for example, using a random map here)
-nside=64
-npix=hp.nside2npix(nside)
+# # Load or create a HEALPix map (for example, using a random map here)
+# nside=64
+# npix=hp.nside2npix(nside)
 
-# Define the Cartesian grid
-nlon, nlat=720, 360  # Resolution of the Cartesian grid
-lon=np.linspace(-180,180,nlon)  # Longitude from -180 to 180 degrees
-lat=np.linspace(-90,90,nlat)  # Latitude from -90 to 90 degrees
-lon_grid, lat_grid=np.meshgrid(lon,lat)
+# # Define the Cartesian grid
+# nlon, nlat=720, 360  # Resolution of the Cartesian grid
+# lon=np.linspace(-180,180,nlon)  # Longitude from -180 to 180 degrees
+# lat=np.linspace(-90,90,nlat)  # Latitude from -90 to 90 degrees
+# lon_grid, lat_grid=np.meshgrid(lon,lat)
 
-# Convert Cartesian coordinates to theta and phi
-theta=np.radians(90-lat_grid)  # Co-latitude in radians
-phi=np.radians(lon_grid)  # Longitude in radians
+# # Convert Cartesian coordinates to theta and phi
+# theta=np.radians(90-lat_grid)  # Co-latitude in radians
+# phi=np.radians(lon_grid)  # Longitude in radians
 
-# Get HEALPix pixel indices for each (theta, phi)
-healpix_indices=hp.ang2pix(nside, theta, phi, nest=True)
+# # Get HEALPix pixel indices for each (theta, phi)
+# healpix_indices=hp.ang2pix(nside, theta, phi, nest=True)
 
-# Create the new Cartesian skymap
-NHImap_cart=NHImap[:,healpix_indices][:,:,::-1]
-NH2map_cart=NH2map[:,healpix_indices][:,:,::-1]
+# # Create the new Cartesian skymap
+# NHImap_cart=NHImap[:,healpix_indices][:,:,::-1]
+# NH2map_cart=NH2map[:,healpix_indices][:,:,::-1]
 # print(NHImap_cart.shape)
 # samples_HI_cart=samples_HI[:,:,healpix_indices][:,:,:,::-1]
 # print(samples_HI_cart.shape)
