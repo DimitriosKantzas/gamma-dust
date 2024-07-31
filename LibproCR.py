@@ -136,6 +136,7 @@ def plot_gSNR(zeta_n,q_n,r,R):
     ax.grid(linestyle='--')
     
     plt.savefig('fg_gSNR.png')
+    print('Saving: fg_gSNR.png')
     plt.close()
 
 # Plot the local spectrum
@@ -198,6 +199,7 @@ def plot_jEp_LOC(pars_prop, zeta_n, q_n, Rsol):
     ax.grid(linestyle='--')
 
     plt.savefig("fg_jEp_LOC.png")
+    print('Saving: fg_jEp_LOC.png')
     plt.close()
 
 # Plot the spatial cosmic-ray distribution
@@ -243,6 +245,7 @@ def plot_jEp_GAL(jE, rg, zg):
     fig.subplots_adjust(hspace=0.05, wspace=0.15, top=1.1, bottom=0.1, left=0.05, right=0.95)
     
     plt.savefig("fg_jEp_GAL.png", dpi=600)
+    print('Saving: fg_jEp_GAL.png')
     plt.close()
 
 # Plot the local gamma-ray emissivity
@@ -268,6 +271,7 @@ def plot_emi_LOC(qg, Eg, rg, zg, Rsol):
     ax.grid(linestyle='--')
 
     plt.savefig("fg_emissivity.png")
+    print('Saving: fg_emissivity.png')
     plt.close()
 
 #############################################################################
