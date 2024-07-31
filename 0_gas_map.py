@@ -66,8 +66,8 @@ projview(
     nest=True, 
     unit=r'$log_{10}N({\rm HI})\, [{\rm cm}^{-2}]$',
     graticule=True, graticule_labels=True, 
-    # xlabel=r'longitude (deg)',
-    # ylabel=r'latitude (deg)',
+    xlabel=r'longitude (deg)',
+    ylabel=r'latitude (deg)',
     projection_type="mollweide",
     sub=121
 )
@@ -80,8 +80,8 @@ projview(
     nest=True, 
     unit=r'$log_{10}N({\rm H}_2)\, [{\rm cm}^{-2}]$',
     graticule=True, graticule_labels=True, 
-    # xlabel=r'longitude (deg)',
-    # ylabel=r'latitude (deg)',
+    xlabel=r'longitude (deg)',
+    ylabel=r'latitude (deg)',
     projection_type="mollweide",
     sub=122
 )
@@ -131,6 +131,10 @@ plt.close()
 #     plt.savefig('fg_gas_sample_%d.png' % (isample), dpi=150)
 #     plt.close()
 
+
+exit()
+
+## TODO ask Minh for the missing files
 # Load diffuse gamma-ray map from Platz et al. 2023
 with h5py.File('JCR/energy_bins.hdf5', 'r') as file:
     print("Keys: %s" % file.keys())
