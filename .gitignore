@@ -1,2 +1,3 @@
 *.png
 *.fits
+JCR/*.hdf5
