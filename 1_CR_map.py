@@ -56,26 +56,28 @@ for i in range(len(E)):
         dXSdEg_SIBYLL[i,j]=ppG.dsigma_dEgamma_SIBYLL(E[i]*1.0e-9,Eg[j])*1.0e-27 # cm^2/GeV
         dXSdEg_QGSJET[i,j]=ppG.dsigma_dEgamma_QGSJET(E[i]*1.0e-9,Eg[j])*1.0e-27 # cm^2/GeV
 
-# # Compute gamma-ray emissivity with cross section from Kafexhiu et al. 2014 (note that 1.8 is the enhancement factor due to nuclei)
-# qg_Geant4=1.8*sp.integrate.trapezoid(jE[:,np.newaxis,:,:]*dXSdEg_Geant4[:,:,np.newaxis,np.newaxis], E*1.0e-9, axis=0) # GeV^-1 s^-1 
+# Compute gamma-ray emissivity with cross section from Kafexhiu et al. 2014 (note that 1.8 is the enhancement factor due to nuclei)
+qg_Geant4=1.8*sp.integrate.trapezoid(jE[:,np.newaxis,:,:]*dXSdEg_Geant4[:,:,np.newaxis,np.newaxis], E*1.0e-9, axis=0) # GeV^-1 s^-1 
 
-# # Load gas density
-# hdul=fits.open('samples_densities_hpixr.fits')
-# rs=(hdul[2].data)['radial pixel edges'].astype(np.float64) # kpc -> Edges of radial bins
-# drs=np.diff(rs)*3.086e21 # cm -> Radial bin width for line-of-sight integration
-# rs=(hdul[1].data)['radial pixel centres'].astype(np.float64)*1.0e3 # pc -> Centres of radial bins for interpolating cosmic-ray distribution
-# samples_HI=(hdul[3].data).T # cm^-3
-# samples_H2=(hdul[4].data).T # cm^-3
-# hdul.close()
-# ngas=2.0*samples_H2+samples_HI # cm^-3
+# Load gas density
+hdul=fits.open('samples_densities_hpixr.fits')
+rs=(hdul[2].data)['radial pixel edges'].astype(np.float64) # kpc -> Edges of radial bins
+drs=np.diff(rs)*3.086e21 # cm -> Radial bin width for line-of-sight integration
+rs=(hdul[1].data)['radial pixel centres'].astype(np.float64)*1.0e3 # pc -> Centres of radial bins for interpolating cosmic-ray distribution
+samples_HI=(hdul[3].data).T # cm^-3
+samples_H2=(hdul[4].data).T # cm^-3
+hdul.close()
+ngas=2.0*samples_H2+samples_HI # cm^-3
 
-# # Interpolate gamma-ray emissivity on healpix-r grid as gas
-# N_sample, N_rs, N_pix=samples_HI.shape
-# NSIDE=int(np.sqrt(N_pix/12))
-# qg_Geant4_healpixr=pCR.get_healpix_interp(qg_Geant4,Eg,rg,zg,rs,NSIDE,Rsol) # GeV^-1 s^-1 -> Interpolate gamma-ray emissivity
+# Interpolate gamma-ray emissivity on healpix-r grid as gas
+N_sample, N_rs, N_pix=samples_HI.shape
+NSIDE=int(np.sqrt(N_pix/12))
+qg_Geant4_healpixr=pCR.get_healpix_interp(qg_Geant4,Eg,rg,zg,rs,NSIDE,Rsol) # GeV^-1 s^-1 -> Interpolate gamma-ray emissivity
 
-# # Compute the diffuse emission in all gas samples
-# gamma_map=np.sum(ngas[:,np.newaxis,:,:]*qg_Geant4_healpixr[np.newaxis,:,:,:]*drs[np.newaxis,np.newaxis,:,np.newaxis],axis=2) # GeV^-1 cm^-2 s^-1
+# Compute the diffuse emission in all gas samples
+gamma_map=np.sum(ngas[:,np.newaxis,:,:]*qg_Geant4_healpixr[np.newaxis,:,:,:]*drs[np.newaxis,np.newaxis,:,np.newaxis],axis=2) # GeV^-1 cm^-2 s^-1
+
+## TODO FIXME numpy.core._exceptions._ArrayMemoryError: Unable to allocate 35.2 GiB for an array with shape (8, 31, 388, 49152) and data type float64
 
 # Record the time finishing computing cosmic-ray map
 end_time=time.time()
@@ -87,8 +89,8 @@ elapsed_time_gamma=end_time-CR_time
 print("Cosmic-ray computing time:                 ", elapsed_time_CR, "seconds")
 print("Gamma-ray computing time in %2d energy bin: " % len(Eg), elapsed_time_gamma, "seconds")
 
-# # Save the gamma-ray maps in a .npz file
-# np.savez('gamma_map.npz', Eg=Eg, gamma_map=gamma_map)
+# Save the gamma-ray maps in a .npz file
+np.savez('gamma_map.npz', Eg=Eg, gamma_map=gamma_map)
 
 # # Plots
 # pCR.plot_gSNR(zeta_n,q_n,rg,R)
