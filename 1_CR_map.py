@@ -39,7 +39,7 @@ rg=np.linspace(0.0,R,501)    # pc
 zg=np.linspace(0.0,L,41)     # pc
 # zg=np.linspace(0.0,L,201)     # pc
 # E=np.logspace(10.0,14.0,81) # eV 
-E=np.logspace(9.0,14.0,101) # eV 
+E=np.logspace(9.0,14.0,81) # eV 
 # E=np.logspace(9.0,10.0,11) # eV 
 jE=pCR.func_jE(pars_prop,zeta_n,q_n,E,rg,zg) # GeV^-1 cm^-2 s^-1
 
@@ -47,18 +47,11 @@ jE=pCR.func_jE(pars_prop,zeta_n,q_n,E,rg,zg) # GeV^-1 cm^-2 s^-1
 CR_time=time.time()
 
 # Compute the cross-section from Kafexhiu's code (numpy deos not work)
-Eg=np.logspace(0,3,31)
+Eg=np.logspace(1,2,2)
 dXSdEg_Geant4=np.zeros((len(E),len(Eg))) 
-dXSdEg_Pythia=np.zeros((len(E),len(Eg))) 
-dXSdEg_SIBYLL=np.zeros((len(E),len(Eg))) 
-dXSdEg_QGSJET=np.zeros((len(E),len(Eg))) 
-
 for i in range(len(E)):
     for j in range(len(Eg)):
         dXSdEg_Geant4[i,j]=ppG.dsigma_dEgamma_Geant4(E[i]*1.0e-9,Eg[j])*1.0e-27 # cm^2/GeV
-        dXSdEg_Pythia[i,j]=ppG.dsigma_dEgamma_Pythia8(E[i]*1.0e-9,Eg[j])*1.0e-27 # cm^2/GeV
-        dXSdEg_SIBYLL[i,j]=ppG.dsigma_dEgamma_SIBYLL(E[i]*1.0e-9,Eg[j])*1.0e-27 # cm^2/GeV
-        dXSdEg_QGSJET[i,j]=ppG.dsigma_dEgamma_QGSJET(E[i]*1.0e-9,Eg[j])*1.0e-27 # cm^2/GeV
 
 # Compute gamma-ray emissivity with cross section from Kafexhiu et al. 2014 (note that 1.8 is the enhancement factor due to nuclei)
 qg_Geant4=1.8*sp.integrate.trapezoid(jE[:,np.newaxis,:,:]*dXSdEg_Geant4[:,:,np.newaxis,np.newaxis], E*1.0e-9, axis=0) # GeV^-1 s^-1 
@@ -81,7 +74,6 @@ qg_Geant4_healpixr=pCR.get_healpix_interp(qg_Geant4,Eg,rg,zg,rs,NSIDE,Rsol) # Ge
 # Compute the diffuse emission in all gas samples
 gamma_map=np.sum(ngas[:,np.newaxis,:,:]*qg_Geant4_healpixr[np.newaxis,:,:,:]*drs[np.newaxis,np.newaxis,:,np.newaxis],axis=2,dtype=np.dtype(np.float32)) # GeV^-1 cm^-2 s^-1
 
-## TODO FIXME numpy.core._exceptions._ArrayMemoryError: Unable to allocate 35.2 GiB for an array with shape (8, 31, 388, 49152) and data type float64
 
 # Record the time finishing computing cosmic-ray map
 end_time=time.time()
@@ -100,7 +92,7 @@ np.savez('gamma_map.npz', Eg=Eg, gamma_map=gamma_map)
 # pCR.plot_gSNR(zeta_n,q_n,rg,R)
 pCR.plot_jEp_LOC(pars_prop,zeta_n,q_n,Rsol)
 # pCR.plot_jEp_GAL(jE/(4.0*np.pi),rg,zg)
-# pCR.plot_emi_LOC(qg_Geant4,Eg,rg,zg,Rsol)
+pCR.plot_emi_LOC(qg_Geant4,Eg,rg,zg,Rsol)
 
 
 # # Compute gamma-ray emissivity with cross section from Kafexhiu et al. 2014 (note that 1.8 is the enhancement factor due to nuclei)
@@ -143,6 +135,6 @@ pCR.plot_jEp_LOC(pars_prop,zeta_n,q_n,Rsol)
 # ax.legend(loc='lower left', prop={"size":fs})
 # ax.grid(linestyle='--')
 
-plt.savefig("fg_emissivity.png")
-plt.close()
-print('Plotting: ./fg_emissivity.png')
+# plt.savefig("fg_emissivity.png")
+# plt.close()
+# print('Plotting: ./fg_emissivity.png')
