@@ -3,9 +3,11 @@
 # Demonstration of the non-parametric correlated field model in NIFTy.re
 
 # The Model
-# import jax
 import os
 os.environ['JAX_ENABLE_X64'] = 'True'
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '/Users/vphan/Minh/Code/Gas3D/gamma-dust')))
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 

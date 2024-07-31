@@ -1,5 +1,8 @@
 import os
 os.environ['JAX_ENABLE_X64'] = 'True'
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '/Users/vphan/Minh/Code/Gas3D/gamma-dust')))
+
 import LibjaxCR as jCR
 import jax.numpy as jnp
 import numpy as np

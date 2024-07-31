@@ -4,7 +4,7 @@ from jax import jit
 from jax import grad
 from jax import vmap
 import numpy as np
-import LibppGam_jax as ppG
+import LibppGam as ppG
 from astropy.io import fits
 import healpy as hp
 
@@ -515,7 +515,7 @@ def func_Gam(alpha):
 def func_gamma_map_gSNR(rgSNR, pars_prop, zeta_n, dXSdEg_Geant4, ngas, drs, points_intr, E):
 # E (eV) and Eg (GeV)
 
-    rSNR, gSNR=rgSNR
+    rSNR, gSNR=rgSNR # pc, pc^-2
 
     mp=938.272e6 # eV
 
@@ -537,7 +537,7 @@ def func_gamma_map_gSNR(rgSNR, pars_prop, zeta_n, dXSdEg_Geant4, ngas, drs, poin
     Diff=1.1e28*(365.0*86400.0/(3.08567758e18)**2)*vp*(p/1.0e9)**0.63/(1.0+(p/pb)**2)**0.1 # pc^2/yr
 
     # Spatial distribution of sources
-    r_int=jnp.linspace(0.0,R,200000)
+    r_int=jnp.linspace(0.0,R,50000)
     fr_int=jnp.interp(r_int,rSNR,gSNR,right=0.0)
 
     j0_n=j0(zeta_n[:,jnp.newaxis]*r_int[jnp.newaxis,:]/R)
