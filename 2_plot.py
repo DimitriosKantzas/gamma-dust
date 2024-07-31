@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import healpy as hp
+# import healpy as hp
 from healpy.newvisufunc import projview, newprojplot
 
 # To load the data back from the .npz file
