@@ -1,3 +1,4 @@
 *.png
 *.fits
 JCR/*.hdf5
+*.npz
